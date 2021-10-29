@@ -1,0 +1,93 @@
+﻿@model IEnumerable<縱火0709.Models.New>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Date)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.New_Title)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.New_Message)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.New_img)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.New_Content)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Sticky)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.InsertAdminID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AddUserId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.InsertTime)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.EditUserId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.EditTime)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Date)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.New_Title)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.New_Message)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.New_img)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.New_Content)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Sticky)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.InsertAdminID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AddUserId)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.InsertTime)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.EditUserId)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.EditTime)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.id }) |
+            @Html.ActionLink("Details", "Details", new { id=item.id }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.id })
+        </td>
+    </tr>
+}
+
+</table>

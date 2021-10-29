@@ -1,0 +1,20 @@
+一、MVC四種常見過濾器(Filter)：
+過濾器類型                     接口                            默認實現                        描述
+動作(方法)Action      IActionFilter               ActionFilterAttribute    在動作方法前後執行
+
+結果Result               IResultFilter                 ActionFilterAttribute    在動作結果被執行之前和之後
+
+授權Authorization    IAuthorizationFilter    AuthorizeAttribute      首先執行，在不論什麼其他過濾器動作方法之前執行
+
+異常 Exception         IExceptionFilter           HandleErrorAttribute  過濾器或動作方法結果彈出異常時執行異常
+
+
+
+二、ORM框架Object Relational Mapping 中文為對象關係映射，是一種為了解決面向對象與關係數據庫存在的互不匹配的現象的技術。簡單的說，ORM是通過使用描述對象和數據庫之間映射的元數據，將程序中的對象自動持久化到關係數據庫中。
+
+Entity Framework(DBFirst數據庫優先模式、CodeFirst代碼優先模式,反向生成) 官方EF
+Dapper 執行效率最高 
+NHibernate
+SqlSugar (國產,免費)
+
+Webform  MVC 過濾器(攔截器)

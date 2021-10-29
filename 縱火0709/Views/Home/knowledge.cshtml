@@ -1,0 +1,54 @@
+﻿@model MvcPaging.IPagedList<縱火0709.Models.FileClass>
+
+@{
+    ViewBag.BarTitle = "知識庫";
+    ViewBag.Subtitle = "知識庫下載 ";
+}
+
+<div class="row">
+    <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+        <div class="sidebar sidebar-right">
+            <div class="widget">
+                <h2 class="widget-title"><i class="fa fa-folder-open-o">&nbsp;</i>@ViewBag.BarTitle </h2>
+                <ul class="arrow nav nav-tabs nav-stacked">
+                    <li class="active"><a href="#">@ViewBag.Subtitle</a></li>
+                </ul>
+            </div>
+            <!-- Categories end -->
+        </div>
+        <!-- Sidebar end -->
+    </div>
+    <!-- Sidebar Col end -->
+    <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
+        <h2 class="page-title">知識庫下載</h2>
+        <hr class="botmargin-min">
+        <!-- 內容開始 -->
+        <table class="table table-striped career-table download-table">
+
+            <thead>
+                <tr>
+                    <th>日期</th>
+                    <th><span class="text-left">標題</span></th>
+                    <th>檔案</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@string.Format("{0:yyyy-MM-dd}", item.AddTime)</td>
+                        <td><span class="text-left">@item.fileText</span></td>
+                        <td><a href="@Url.Content(item.fileUrl)" class="btn btn-primary"><i class="fa fa-download"></i> 下載</a></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        <div class="pager">
+            @Html.Pager(Model.PageSize, Model.PageNumber, Model.TotalItemCount).Options(o => o.AlwaysAddFirstPageNumber())
+            @Model.ItemStart/@Model.ItemEnd 頁 總共 @Model.TotalItemCount 筆
+        </div>
+    </div>
+    <!-- Content Col end -->
+    <!-- 內容結束 -->
+</div>

@@ -1,0 +1,160 @@
+﻿@model IPagedList<縱火0709.Models.UserViewModel>
+@using PagedList
+@using PagedList.Mvc
+
+@using 縱火0709.Models;
+@*@model IPagedList<縱火0709.Models.ViewModel.TypeViewModel>*@
+<link href="~/Content/PagedList.css" rel="stylesheet" />
+@{
+    ViewBag.Title = "Index";
+}
+<h2>用戶列表</h2>
+
+<p>
+    @Html.ActionLink("新增管理者", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.FirstOrDefault().UserType.TypeName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FirstOrDefault().Account)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FirstOrDefault().UserImg)
+        </th>
+
+        <th>
+            @Html.DisplayNameFor(model => model.FirstOrDefault().Authority)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FirstOrDefault().Error)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FirstOrDefault().UserName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FirstOrDefault().UserPhone)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FirstOrDefault().UserEmail)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FirstOrDefault().Sex)
+        </th>
+
+        <th>編輯/查看/刪除</th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.UserType.TypeName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Account)
+            </td>
+            <td>
+                <img style="width: 100px;height: 100px" src="@Url.Content(@item.UserImg)" class="img-thumbnail" />
+            </td>
+
+            <td>
+                @*@Html.DisplayFor(modelItem => item.Authority)*@
+                @{
+                    //權限標籤
+                    string[] array = item.Authority.Split(',');
+                    foreach (var tag in array)
+                    {
+                        if (tag == "A01")
+                        {
+                            <span class='badge badge-danger'>權限列表</span>
+                        }
+                        if (tag == "A02")
+                        {
+                            <span class='badge badge-danger'>新增權限</span>
+                        }
+                        if (tag == "B01")
+                        {
+                            <span class='badge badge-success'>新增新聞</span>
+                        }
+                        if (tag == "B02")
+                        {
+                            <span class='badge badge-success'>新聞列表</span>
+                        }
+                        if (tag == "C01")
+                        {
+                            <span class='badge badge-info'>新增用戶</span>
+                        }
+                        if (tag == "C02")
+                        {
+                            <span class='badge badge-info'>用戶列表</span>
+                        }
+                        if (tag == "D01")
+                        {
+                            <span class='badge badge-primary'>新增圖片</span>
+                        }
+                        if (tag == "E01")
+                        {
+                            <span class='badge badge-warning'>新增檔案</span>
+                        }
+                    }
+                }
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Error)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UserName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UserPhone)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UserEmail)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Sex)
+            </td>
+            @if (item.TypeId == 1 || item.TypeId == 2)
+            {
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.Id, page = Request["page"] }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.Id, page = Request["page"] }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                </td>
+            }
+            else
+            {
+                <td>
+                    @Html.ActionLink("Details", "DetailsMember", new { id = item.Id }) |
+                    @Html.ActionLink("Delete", "DeleteMember", new { id = item.Id }, new { @class = "deleteBtn" })
+                </td>
+            }
+        </tr>
+    }
+</table>
+
+<div class="text-center">
+    @Html.PagedListPager((IPagedList)Model, page => Url.Action("Index", new { page = page }),
+        new PagedListRenderOptions
+        {
+            LinkToFirstPageFormat = "首頁",
+            LinkToPreviousPageFormat = "上一頁",
+            LinkToNextPageFormat = "下一頁",
+            LinkToLastPageFormat = "尾頁"
+        })
+</div>
+
+@section Scripts {
+    <script>
+        $(function () {
+            //刪除點選
+            $(".deleteBtn").click(function () {
+                return confirm("確定要刪除?");
+            });
+        });
+    </script>
+
+}

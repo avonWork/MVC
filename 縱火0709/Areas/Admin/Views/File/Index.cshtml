@@ -1,0 +1,240 @@
+﻿@using PagedList.Mvc;
+@using PagedList;
+@model PagedList.IPagedList<縱火0709.Models.FileClass>
+<link href="~/Content/PagedList.css" rel="stylesheet" />
+
+<div class="card">
+    @* 輸入框 *@
+    <div class="card-header">
+        @Html.Partial("_FileInput")
+    </div>
+    <div class="card-block p-b-0">
+        <div class="row">
+            <div class="col-sm-12 table-responsive">
+                @* 列表 *@
+                <table class="table">
+                    <thead class="table-active ">
+                        <tr>
+                            <th style="width: 5%"><input id="checkAll" type="checkbox" /></th>
+                            <th style="width: 7%">編號</th>
+                            <th>檔案名</th>
+                            <th style="width: 30%">檔案文字</th>
+                            <th style="width: 8%">檔案下載</th>
+                            <th class="text-center">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @Html.EditorForModel()
+                    </tbody>
+                </table>
+                @* 編號排序按鈕 *@
+                <div class="col-sm-12 table-responsive">
+                    <a class="text-info" id="checkEdit">Edit</a>/
+                    <a class="text-info" id="checkCancel">Cancel</a>/
+                    <a id="checkUpdate" disabled="disabled">Update</a>
+                </div>
+                @* 分頁 *@
+                <div class="text-center">
+                    @Html.PagedListPager((IPagedList)Model, page => Url.Action("Index", new
+                    {
+                        page
+                    }),
+new PagedListRenderOptions
+{
+         LinkToFirstPageFormat = "首頁",
+         LinkToLastPageFormat = "尾頁"
+})
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts
+{
+    <script src="https://kit.fontawesome.com/a6229d3238.js" crossorigin="anonymous"></script>
+    <script src="~/Scripts/jquery-3.4.1.min.js"></script>
+
+    <script>
+        $(function() {
+            let page = window.location.search.split(`=`)[1] === undefined ? 1 : window.location.search.split(`=`)[1];
+
+            //檔案編輯點選(自抓元素不用ajax)優化
+            $(".Select").click(function() {
+                let tr = $(this).closest("tr");
+                let cc = tr.find("td:eq(3) #displayTxt").text().trim("");
+                tr.find("td:eq(3) #enterTxt").show().find("input[name=fileTxt]").attr("value", cc);
+                tr.find(".updateBtn").show();
+                tr.find(".cencelBtn").show();
+                tr.find(".Select").hide();
+                tr.find(".deleteBtn").hide();
+                tr.find("td:eq(3) #displayTxt").hide();
+            });
+
+            //取消點選
+            $(".cencelBtn").click(function() {
+                let tr = $(this).closest("tr");
+                tr.find("td:eq(3) #enterTxt").hide();
+                tr.find(".updateBtn").hide();
+                tr.find(".cencelBtn").hide();
+                tr.find(".Select").show();
+                tr.find(".deleteBtn").show();
+                tr.find("td:eq(3) #displayTxt").show();
+            });
+
+            //更新方法二(留著)
+            @*$(".updateBtn").click(function () {
+            let tr = $(this).closest("tr");
+            let fileInputTxt = tr.find("td:eq(4) #enterTxt").find("input[name=fileTxt]").val();
+            let fileInputId = tr.find(".updateBtn").attr("id");
+            //let page = window.location.search.split(`=`)[1];
+            $.ajax({
+                url: "@Url.Action("UpdateFileTxt", "FileDemo")",
+                data: { "txt": fileInputTxt, "id": fileInputId}, // 變數名稱必須跟Action裡的相同
+                cache: false,
+                type: "POST",
+                success: function (data, textStatus, jqXHR) {
+                    window.location.href = "Index";
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    alert("Found updateBtn error when using Ajax!!");
+                    // 記得要加入error handler不然很難除錯XDDD
+                }
+            });
+        });*@
+
+            //檔案更新點選(傳值action不用ajax)優化
+            $(".updateBtn").click(function() {
+                let tr = $(this).closest("tr");
+                let fileInputTxt = tr.find("td:eq(3) #enterTxt").find("input[name=fileTxt]").val();
+                let fileInputId = tr.find(".Select").attr("id");
+                $(".updateBtn").attr("href", "/Admin/File/UpdateFileTxt?id=" + fileInputId + "&txt=" + fileInputTxt + "&page=" + page);
+            });
+
+            //刪除點選
+            $(".deleteBtn").click(function() {
+                return confirm("確定要刪除?");
+            });
+
+            //檔案輸入框名稱顯示
+            $('.custom-file-input').on('change',
+                function() {
+                    let fileName = $(this).val().split('\\').pop();
+                    $(this).next(' .custom-file-control').addClass("selected").html(fileName);
+                });
+
+            //全選
+            $("#checkAll").click(function() {
+                //方法1
+                $("input[name='fileID']").prop("checked", this.checked);
+                $("input[name='fileID']").click(function() {
+                    if ($("input[name='fileID']").length == $("input[name='fileID']:checked").length) {
+                        console.log("ok");
+                        $(this).prop("checked", "checked");
+                    } else {
+                        $(this).removeAttr("checked");
+                    }
+                });
+            });
+
+            //編輯編號排序
+            $("#checkEdit").click(function() {
+                //更新打開
+                if ($(".chkCheckBoxId:checked").length > 0) {
+                    $("#checkUpdate").removeAttr("disabled").attr("class", "text-danger");
+                }
+                let checkItem = new Array(); //checkid
+                let checkTxtItem = new Array(); //checktxt
+
+                $(".chkCheckBoxId:checked").each(function(i) {
+                    let tr = $(this).closest("tr");
+                    let ff = tr.find("td:eq(1) #displayOrder").text().trim("");
+                    if (this.checked)
+                        checkItem.push($(this).val());
+                    tr.find("td:eq(1) #displayOrder").hide();
+                    tr.find("td:eq(1) #enterOrder").show().find("input[name=fileorder]").attr("value", ff);
+
+                    //checkCancel按鈕事件(優化)
+                    $("#checkCancel").click(function() {
+                        tr.find("td:eq(1) #displayOrder").show().siblings().hide();
+                        //更新失效
+                        $("#checkUpdate").attr("disabled", "disabled").removeAttr("class");
+                    });
+                });
+
+                //checkUpdate按鈕事件
+                $("#checkUpdate").click(function() {
+                    //更新機制 防止取消事件又更新
+                    if ($(this).attr("disabled") != "disabled") {
+                        $(".chkCheckBoxId:checked").each(function(i) {
+                            let gg = $(this).closest("tr").find("td:eq(1) #enterOrder").find("input[name=fileorder]").val();
+                            checkTxtItem.push(gg);
+                        });
+
+                        $.ajax({
+                            url: "@Url.Action("OrderUpdate", "File")",
+                            data: { "ids": checkItem, "text": checkTxtItem }, // 變數名稱必須跟Action裡的相同
+                            cache: false,
+                            type: "POST",
+                            success: function(data) {
+                                window.location.href = "/Admin/File/index?page=" + page;
+                            },
+                            error: function(jqXHR, textStatus, errorThrown) {
+                                console("Found checkUpdate error when using Ajax!!");
+                            }
+                        });
+                    }
+                });
+            });
+
+        });
+    </script>
+    <script>
+                                    //編輯方法二(留著)
+        @*function Remove(id) {
+        $.ajax({
+            url: "@Url.Action("displayFileTxt", "FileDemo")",
+            type: "post",
+            dataType: "json", //回调类型(返回值类型)
+            data: { "id": id }, // async:true异步调用
+            success: function (result) {
+                $('.Select').click(function() {
+                    let tr = $(this).closest("tr");
+                    tr.find("td:eq(4) #enterTxt").show().find("input[name=fileTxt]").attr("value", result);
+                    tr.find(".updateBtn").show();
+                    tr.find(".cencelBtn").show();
+                    tr.find(".Select").hide();
+                    tr.find(".deleteBtn").hide();
+                    tr.find("td:eq(4) #displayTxt").hide();
+                });
+            },
+            error: function (response) {
+                alert("response");
+            }
+        });
+
+        return false;
+    }*@
+    </script>
+}
+
+@section Styles
+{
+    <style>
+        .custom-file-control:lang(en)::after {
+            content: "選擇檔案";
+        }
+
+        .custom-file-control:lang(en)::before {
+            content: "上傳";
+        }
+
+        .custom-file-control.selected:lang(en)::after {
+            content: "" !important;
+        }
+
+        .btn-info {
+            background-color: #8bd2fd !important;
+            border-color: #8bd2fd !important;
+        }
+    </style>
+}

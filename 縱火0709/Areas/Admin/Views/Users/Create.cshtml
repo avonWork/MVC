@@ -1,0 +1,207 @@
+﻿@model 縱火0709.Models.UserViewModel
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<h2>新增用戶</h2>
+
+@using (Html.BeginForm("Create", "Users", FormMethod.Post, new { @enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>管理者</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.TypeId, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("TypeId", null, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.TypeId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.UserName, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.UserName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.UserName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+
+        @*範例*@
+        <div class="form-group">
+            @Html.LabelFor(model => model.UserImg, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <div class="col-sm-2 p-3">
+                    @*預覽fileupload照片*@
+                    <div id="picview"></div>
+                    @*預覽fileupload照片 end*@
+                </div>
+                <div class="col-sm-4">
+                    @Html.TextBox("uploadFile", "", new { type = "file", @class = "vertical", onchange = "picview(this)" })
+                    @Html.ValidationMessageFor(model => model.UserImg, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Account, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Account, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Account, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        @*範例*@
+        <div class="form-group">
+            @Html.LabelFor(model => model.UserPassword, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.PasswordFor(model => model.UserPassword, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.UserPassword, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Authority, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Authority, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                @Html.ValidationMessageFor(model => model.Authority, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.UserPhone, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.UserPhone, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.UserPhone, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.UserEmail, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.UserEmail, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.UserEmail, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Sex, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <div class="col-md-3 p-0 ">
+                    @*@Html.EditorFor(model => model.Sex, new { htmlAttributes = new { @class = "form-control" } })*@
+                    @Html.DropDownListFor(model => model.Sex, new SelectList(Enum.GetValues(typeof(縱火0709.Models.Enum.GenderType))), new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Sex, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+        @*代碼*@
+        <div class="form-group">
+            @Html.LabelFor(model => model.HobbyItems, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <div class="form-group m-5">
+                    @for (int i = 0; i < Model.HobbyItems.Count; i++)
+                    {
+                        <td>
+                            @Html.HiddenFor(x => Model.HobbyItems[i].Id)
+                            @Html.DisplayFor(it => Model.HobbyItems[i].Title)
+                        </td>
+                        <td>
+                            @Html.CheckBoxFor(it => Model.HobbyItems[i].IsChecked)
+                        </td>
+                    }
+                </div>
+            </div>
+        </div>
+
+       
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Ramark, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextAreaFor(model => model.Ramark, new { @class = "form-control", @rows = "4" })
+
+                @Html.ValidationMessageFor(model => model.Ramark, "", new { @class = "text-danger" })
+
+                @*樹狀權限產生html*@
+                <div class="tree">
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+            <div>
+                @Html.ActionLink("Back to List", "Index")
+            </div>
+        </div>
+    </div>
+}
+
+@*樹狀權限產生js*@
+<script src="~/Scripts/tree.min.js"></script>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        let data = @Html.Raw(ViewBag.tree);
+        let tree = new Tree('.tree',
+            {
+                data: data,
+                closeDepth: 3,
+                loaded: function() {
+                    this.values = ['0-0-0', '0-1-1'];
+                    console.log(this.selectedNodes)
+                    console.log(this.values)
+                    this.disables = ['0-0-0', '0-0-1', '0-0-2']
+                },
+                onChange: function() {
+                    console.log(this.values);
+                    $('#Authority').val(this.values);
+                }
+            })
+    </script>
+    @*顯示圖片*@
+    <script type="text/javascript">
+        function picview(file) {
+            var picviewDiv = document.getElementById('picview');
+            if (file.files && file.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (evt) {
+                    picviewDiv.innerHTML = '<img class="img1" src="' + evt.target.result + '" />';
+                }
+                reader.readAsDataURL(file.files[0]);
+            }
+            else {
+                picviewDiv.innerHTML = '<div class="img1" style="filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=scale,src=\'' + file.value + '\'"></div>';
+            }
+        }
+    </script>
+}
+
+@section Styles
+{
+    @*圖片顯示框樣式*@
+    <style type="text/css">
+        #picview, .img1 {
+            width: 161px;
+            height: 121px;
+            position: relative;
+            left: -1px;
+            top: -1px;
+            border: 1px solid #000;
+        }
+
+        #picview {
+            border: 1px solid #000;
+        }
+
+        .vertical {
+            margin-top: 50px;
+        }
+    </style>
+}

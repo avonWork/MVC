@@ -1,0 +1,116 @@
+﻿@using 縱火0709.Models;
+@model UserViewModel
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>用戶詳細</h2>
+
+<div>
+    <h4>管理者</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.UserType.TypeName)
+        </dt>
+
+        <dd>
+            @Html.Display("TypeId")
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.UserName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.UserName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.UserImg)
+        </dt>
+
+        <dd>
+            <img src="@Url.Content(Model.UserImg)" style="width: 161px;height: 121px;" class="img-thumbnail" />
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Account)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Account)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Authority)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Authority)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.UserPhone)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.UserPhone)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.UserEmail)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.UserEmail)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Sex)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Sex)
+        </dd>
+
+        @*代碼*@
+        <dt>
+            @Html.DisplayNameFor(model => model.HobbyItems)
+        </dt>
+        <dd>
+            @for (int i = 0; i < Model.HobbyItems.Count; i++)
+            {
+                @Html.HiddenFor(x => Model.HobbyItems[i].Id)
+                @Html.DisplayFor(it => Model.HobbyItems[i].Title)
+            }
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Ramark)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Ramark)
+        </dd>
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id, page = Request["page"] }) |
+    @Html.ActionLink("Back to List", "Index", new { page = Request["page"] })
+</p>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        //jq作法
+        //$(function () {
+        //    $("dd:last").html($("dd:last").text().substring(1, $("dd:last").text().length - 9));
+        //});
+        //js作法 興趣逗點去掉,沒有興趣自動補"無"
+        let aa = document.querySelector("dl").children[17].innerText;
+        //let aa = document.querySelector("dl").lastElementChild.innerText;
+        let bb = aa.substring(0, aa.length - 1);
+        if (aa.length == 0) {
+            document.querySelector("dl").children[17].textContent = "無";
+        } else {
+            document.querySelector("dl").children[17].innerText = bb;
+        }
+    </script>
+}

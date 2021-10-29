@@ -1,0 +1,176 @@
+﻿@using Newtonsoft.Json
+@using 縱火0709.Models
+@model 縱火0709.Models.Article
+@{
+    ViewBag.BarTitle = "會員專區";
+    ViewBag.Subtitle = "討論區";
+
+}
+
+<div class="row">
+    <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+        <div class="sidebar sidebar-right">
+            <div class="widget">
+                <h2 class="widget-title"><i class="fa fa-folder-open-o">&nbsp;</i>@ViewBag.BarTitle</h2>
+                <ul class="arrow nav nav-tabs nav-stacked">
+                    <li class="active"><a href="~/Members/member_forum">討論區</a></li>
+                    <li><a href="~/Members/member_edit?userid=@ViewBag.memberId">修改個人資料</a></li>
+                    <li><a href="~/Home/Logout">登出</a></li>
+                </ul>
+            </div>
+            <!-- Categories end -->
+        </div>
+        <!-- Sidebar end -->
+    </div>
+    <!-- Sidebar Col end -->
+
+    <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
+
+        <h2 class="page-title">@ViewBag.Subtitle</h2>
+        <hr class="botmargin-min">
+        <!-- 內容開始 -->
+
+        <style>
+            .entry-header {
+                background: #3c73b0;
+                color: white;
+                padding: 10px 30px;
+            }
+
+                .entry-header .entry-title {
+                    color: white;
+                }
+
+            .post-content {
+                border: whitesmoke 1px solid;
+                margin-bottom: 20px;
+                box-shadow: rgba(210,210,210,.1) 2px 2px 20px;
+            }
+
+            .post {
+                border: whitesmoke 1px solid;
+                padding: 0;
+            }
+
+            .postInfo {
+                padding: 10px 20px;
+                background: #eee;
+                text-align: right;
+            }
+
+            .respon {
+                margin: 20px auto;
+                display: inline-block;
+                padding: 3px 8px;
+                background: #b2b2b2;
+                color: white;
+                border-radius: 2px;
+            }
+
+            .post-body {
+                background: #FCFCFC;
+                padding: 30px;
+                box-shadow: rgba(210,210,210,.1) 2px 2px 20px;
+            }
+
+            .clear {
+                clear: both;
+            }
+
+            .postMan {
+                font-size: 16px;
+            }
+
+            .banner-area-bgurl {
+                position: relative;
+                min-height: 150px;
+                color: #fff;
+                background-position: 50% 0%;
+                -webkit-background-size: cover;
+                background-size: cover;
+                -webkit-backface-visibility: hidden;
+                background-image: url(../../font/images/banner-bg.jpg);
+            }
+        </style>
+        @*article*@
+        <div class="post-content">
+            <div class="entry-header">
+                <h2 class="entry-title">
+                    @Html.DisplayFor(model => model.Article_Title)
+                </h2>
+                <span class="postMan">
+                    發表人:@Html.DisplayFor(model => model.Article_name)
+                </span>
+            </div><!-- header end -->
+            <div class="postInfo">
+                <span class="post-meta-date"><i class="fa fa fa-clock-o"></i> @string.Format("{0:yyyy/MM/dd}", Model.AddTime)</span>
+            </div>
+            <div class="post-body">
+                <div class="entry-content topmargin-min">
+                    <p>
+                        @Html.Raw(Model.Article_Content)
+                    </p>
+                </div>
+                <div class="tags-area clearfix">
+                </div>
+            </div>
+        </div><!-- post-body end -->
+
+        @Html.ActionLink("回應文章", "member_ReArticle", new { ArtID = Model.id }, new { @class = "respon" })
+        <div class="clear"></div>
+        @*replaylist*@
+        @if (Model.Replys.Count != 0)
+        {
+            foreach (var repList in Model.Replys.OrderByDescending(x=>x.AddTime).ToList())
+            {
+                <div class="post">
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <div class="entry-header">
+                                <div class="post-media post-image postMan">
+                                    回應:@repList.Reply_name
+                                </div>
+                            </div>
+                            <div class="postInfo">
+                                <span class="post-meta-date"><i class="fa fa fa-clock-o"></i> @string.Format("{0:yyyy/MM/dd}", repList.AddTime)</span>
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <div class="post-body">
+                                <p>
+                                    @Html.Raw(repList.Reply_Content)
+                                </p>
+                            </div>
+                            <!-- post-body end -->
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+        @*<div class="paging text-center">
+                <div class="pagination">
+
+                    <span class="disabled">«</span><span class="disabled">»</span>
+                </div>
+            </div>*@
+
+        <div class="post-footer  pull-left">
+            @Html.ActionLink("返回列表", "member_forum", new { page = Request["page"] }, new { @class = "btn btn-primary" })
+        </div>
+
+        <!-- Content row 1 end -->
+        <!-- 內容結束 -->
+
+        <div class="tags-area clearfix">
+
+            <div class="share-items pull-right" style="display: none">
+                <ul class="post-social-icons unstyled">
+                    <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+                    <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                    <li><a href="#"><i class="fa fa-google-plus"></i></a></li>
+                </ul>
+            </div>
+        </div>
+    </div>    <!-- Content Col end -->
+    <!-- 內容結束 -->
+</div>

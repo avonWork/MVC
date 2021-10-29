@@ -1,0 +1,78 @@
+﻿@model 縱火0709.Models.News
+@{
+    ViewBag.BarTitle = "訊息發佈 ";
+    ViewBag.Subtitle = "最新消息";
+}
+<div class="row">
+
+    <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+
+        <div class="sidebar sidebar-right">
+            <div class="widget">
+                <h2 class="widget-title"><i class="fa fa-folder-open-o">&nbsp;</i>@ViewBag.BarTitle</h2>
+                <ul class="arrow nav nav-tabs nav-stacked">
+                    <li class="active"><a href="#">@ViewBag.Subtitle</a></li>
+                </ul>
+            </div><!-- Categories end -->
+        </div><!-- Sidebar end -->
+    </div><!-- Sidebar Col end -->
+
+    <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
+
+        <h2 class="page-title">@ViewBag.Subtitle</h2>
+        <hr class="botmargin-min">
+
+        <div class="post-content">
+            <div class="post-body">
+                <div class="entry-header">
+                    <span class="post-meta-date">
+                        <i class="fa fa fa-clock-o"></i>
+                        @Html.DisplayFor(model => model.Date)
+                    </span>
+                    <h2 class="entry-title">
+                        @Html.DisplayFor(model => model.New_Title)
+                    </h2>
+                </div><!-- header end -->
+
+                <div class="post-media post-image">
+                    <img src="images/news-img.jpg" class="img-responsive" alt="">
+                </div>
+
+                <div class="entry-content topmargin-min">
+                    @Html.Raw(Model.New_Content)
+                </div>
+
+                <div class="tags-area clearfix">
+                    <div class="post-footer  pull-left">
+                        @Html.ActionLink("返回列表", "news", new { page = Request["page"] }, new { @class = "btn btn-primary" })
+                    </div>
+
+                    <div class="share-items pull-right">
+                        <ul class="post-social-icons unstyled">
+                            <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+                            <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                            <li><a href="#"><i class="fa fa-google-plus"></i></a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div><!-- post-body end -->
+        </div>
+
+        <!-- post content end -->
+    </div><!-- Content Col end -->
+</div><!-- Main row end -->
+@section Styles
+{
+    <style type="text/css">
+        .banner-area-bgurl {
+            position: relative;
+            min-height: 150px;
+            color: #fff;
+            background-position: 50% 0%;
+            -webkit-background-size: cover;
+            background-size: cover;
+            -webkit-backface-visibility: hidden;
+            background-image: url(../../font/images/banner-bg.jpg);
+        }
+    </style>
+}

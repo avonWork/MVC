@@ -1,0 +1,65 @@
+﻿@model 縱火0709.Models.News
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>新聞詳細</h2>
+
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Date)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Date)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.New_Title)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.New_Title)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.New_Message)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.New_Message)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.New_img)
+        </dt>
+
+        <dd>
+            <img src="@Url.Content(Model.New_img)" style="width: 121px;height: 121px" class="img-thumbnail" />
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.New_Content)
+        </dt>
+
+        <dd>
+            @Html.Raw(Model.New_Content)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Sticky)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Sticky)
+        </dd>
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.id, page = Request["page"], searchTitle = Request.QueryString["searchTitle"], searchStartDate = Request.QueryString["searchStartDate"], searchEndDate = Request.QueryString["searchEndDate"], sortBy = Request["sortBy"] }) |
+
+    @Html.ActionLink("Back to List", "Index", new { page = Request["page"], searchTitle = Request.QueryString["searchTitle"], searchStartDate = Request.QueryString["searchStartDate"], searchEndDate = Request.QueryString["searchEndDate"], sortBy = Request["sortBy"] })
+</p>

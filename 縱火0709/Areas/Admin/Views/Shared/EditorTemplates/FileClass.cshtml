@@ -1,0 +1,43 @@
+﻿@model  縱火0709.Models.FileClass
+<tr class="table-info">
+    <td>
+        <input type="checkbox" name="fileID" id="fileID" value="@Model.Id" class="chkCheckBoxId" />
+    </td>
+    <td>
+        <div id="displayOrder">
+            <input type="hidden" name="hidden" value="@Model.Id">
+            @Model.fileorder
+        </div>
+        <div id="enterOrder" style="display: none">
+            <input class="form-control text-left" name="fileorder" type="text">
+        </div>
+    </td>
+    <td>
+        @Model.fileName
+    </td>
+    <td>
+        <div id="displayTxt">
+            @Model.fileText
+        </div>
+        <div id="enterTxt" style="display: none">
+            <input class="form-control text-left" name="fileTxt" type="text">
+        </div>
+    </td>
+    <td>
+        <a class="text-info fa-2x" href=@Url.Content(Model.fileUrl)><i class="far fa-file-pdf"></i></a>
+    </td>
+    <td class="text-center">
+        <div class="btn-group btn-group-sm" role="group" aria-label="Button group with nested dropdown">
+            <a class="btn btn-success Select" id="@Model.Id">編輯</a>
+            @* 編輯方法二 *@
+            @*<a class="btn btn-success Select" onClick="Remove(@Model.Id);">編輯</a>*@
+            @* 更新方法二 *@
+            @*<a class="btn btn-warning updateBtn" , style="display: none" id="@Model.Id">更新</a>*@
+            <a class="btn btn-warning updateBtn" , style="display: none">更新</a>
+
+            <a class="btn btn-primary cencelBtn" style="display: none;">取消</a>
+
+            @Html.ActionLink("刪除", "Delete", "File", new { id = Model.Id }, new { @class = "btn btn-danger deleteBtn" })
+        </div>
+    </td>
+</tr>

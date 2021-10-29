@@ -1,0 +1,107 @@
+﻿@model 縱火0709.Models.LoginViewModel
+
+@{
+    ViewBag.BarTitle = "會員專區";
+    ViewBag.Subtitle = "會員登入 ";
+    Html.EnableClientValidation();
+    Html.EnableUnobtrusiveJavaScript();
+}
+<div class="row">
+    <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+        <div class="sidebar sidebar-right">
+            <div class="widget">
+                <h2 class="widget-title"><i class="fa fa-folder-open-o">&nbsp;</i>@ViewBag.BarTitle</h2>
+                <ul class="arrow nav nav-tabs nav-stacked">
+                    <li class="active"><a href="#">@ViewBag.Subtitle</a></li>
+                </ul>
+            </div>
+            <!-- Categories end -->
+        </div>
+        <!-- Sidebar end -->
+    </div>
+    <!-- Sidebar Col end -->
+    <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
+        <h2 class="page-title">@ViewBag.Subtitle</h2>
+        <hr class="botmargin-min">
+        <!-- 內容開始 -->
+        @using (Html.BeginForm("member_login", "Home", FormMethod.Post, new { @class = "form-horizontal comments-form" }))
+        {
+            @Html.AntiForgeryToken()
+            <h3>請輸入您的帳號及密碼</h3>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">帳 號：</label>
+                <div class="col-sm-8">
+                    @Html.EditorFor(model => model.Account, new { htmlAttributes = new { @class = "form-control", @placeholder = "請輸入帳號" } })
+                </div>
+                <div class="col-sm-2">
+                    @Html.ValidationMessageFor(model => model.Account, "", new { @class = "alertred" })
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">密 碼：</label>
+                <div class="col-sm-8">
+                    @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control", @placeholder = "請輸入密碼" } })
+                </div>
+                <div class="col-sm-2">
+                    @Html.ValidationMessageFor(model => model.Password, "", new { @class = "alertred" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button class="btn btn-primary solid blank" type="submit">登 入</button>
+                </div>
+            </div>
+
+            <hr>
+
+            <div>
+                <a href="~/Members/member_ForgotPassword">忘記密碼</a>
+                <a class="col-sm-9" href="~/Members/member_reg">尚未註冊</a>
+            </div>
+
+        }
+
+        <div class="tags-area clearfix">
+            <div class="share-items pull-right">
+                <ul class="post-social-icons unstyled">
+                    <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+                    <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                    <li><a href="#"><i class="fa fa-google-plus"></i></a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- Content Col end -->
+    <!-- 內容結束 -->
+</div>
+@section scripts{
+    @Scripts.Render("~/bundles/jquery");
+    @Scripts.Render("~/bundles/jqueryval");
+    @*fontawesome專屬icon*@
+    <script src="https://kit.fontawesome.com/a6229d3238.js" crossorigin="anonymous"></script>
+}
+
+@section Styles
+{
+    <style>
+        /*驗證字串前加圖標*/
+        .field-validation-error:before {
+            font-family: FontAwesome;
+            content: "\f06a\00a0";
+        }
+    </style>
+}
+
+@if (TempData["error"] != null)
+{
+    <script>
+        alert("@TempData["error"]");
+    </script>
+}
+@if (TempData["message"] != null)
+{
+    <script>
+        alert("@TempData["message"]");
+    </script>
+}

@@ -1,0 +1,42 @@
+﻿@model PagedList.IPagedList<縱火0709.Models.ImgClass>
+
+@foreach (var item in Model)
+{
+    <tr class="table-danger">
+        <td>
+            <input type="checkbox" name="imgID" id="imgID" value="@item.Id" class="chkCheckBoxId" />
+        </td>
+        <td>
+            <div id="displayOrder">
+                <input type="hidden" name="hidden" value="@item.Id">
+                @item.imgorder
+            </div>
+            <div id="enterOrder" style="display: none">
+                @Html.TextBox("imgorder", "", new { @class = "form-control" })
+            </div>
+        </td>
+        <td>
+            <img src="@Url.Content(item.imgUrl)" style="width: 101px;height: 81px;" class="img-thumbnail" />
+        </td>
+        <td>
+            @item.imgName
+        </td>
+        <td>
+            <div id="displayTxt">
+                @item.imgText
+            </div>
+            <div id="enterTxt" style="display: none">
+                @Html.TextBox("imgTxt", "", new { @class = "form-control" })
+            </div>
+        </td>
+        <td class="text-center">
+            <div class="btn-group btn-group-sm" role="group" aria-label="Button group with nested dropdown">
+                <a class="btn btn-success Select" id="@item.Id">編輯</a>
+                <a class="btn btn-warning updateBtn" , style="display: none" id="@item.Id">更新</a>
+                <a class="btn btn-primary cencelBtn" style="display: none;">取消</a>
+
+                @Html.ActionLink("刪除", "Delete", "Img", new { id = item.Id }, new { @class = "btn btn-danger deleteBtn" })
+            </div>
+        </td>
+    </tr>
+}
